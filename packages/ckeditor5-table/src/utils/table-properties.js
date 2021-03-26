@@ -52,15 +52,17 @@ export function getSingleValue( objectOrString ) {
  * @returns {String|*}
  */
 export function addDefaultUnitToNumericValue( value, defaultUnit ) {
-	const numericValue = parseFloat( value );
+	const allMatches = value.match(/[-+]?(\d+([.,]\d*)?|[.,]\d+)([eE][-+]?\d+)?/mg);
+
+	if ( allMatches === null ) {
+		return value;
+	}
+
+	const numericValue = parseFloat( allMatches[0].replace(',', '.'));
 
 	if ( Number.isNaN( numericValue ) ) {
 		return value;
 	}
 
-	if ( String( numericValue ) !== String( value ) ) {
-		return value;
-	}
-
-	return `${ numericValue }${ defaultUnit }`;
+	return `${ numericValue }em`;
 }
